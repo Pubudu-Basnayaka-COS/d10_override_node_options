@@ -1,17 +1,11 @@
 <?php
 
-/**
- * @file
- * Unit tests for the override_node_options module.
- */
-
 namespace Drupal\Tests\override_node_options\Functional;
 
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\node\NodeInterface;
 use Drupal\Tests\BrowserTestBase;
-use Drupal\user\UserInterface;
 
 /**
  * Unit tests for the override_node_options module.
@@ -23,21 +17,21 @@ class OverrideNodeOptionsTest extends BrowserTestBase {
   /**
    * A standard authenticated user.
    *
-   * @var UserInterface $normalUser
+   * @var Drupal\user\UserInterface
    */
   protected $normalUser;
 
   /**
    * An administrator user.
    *
-   * @var UserInterface $adminUser
+   * @var Drupal\user\UserInterface
    */
   protected $adminUser;
 
   /**
    * A node to test against.
    *
-   * @var NodeInterface $node
+   * @var Drupal\node\NodeInterface
    */
   protected $node;
 
@@ -69,7 +63,7 @@ class OverrideNodeOptionsTest extends BrowserTestBase {
   /**
    * Assert that fields in a node were updated to certain values.
    *
-   * @param NodeInterface $node
+   * @param Drupal\node\NodeInterface $node
    *   The node object to check (will be reloaded from the database).
    * @param array $fields
    *   An array of values to check equality, keyed by node object property.
@@ -104,7 +98,7 @@ class OverrideNodeOptionsTest extends BrowserTestBase {
   /**
    * Assert that the user cannot access fields on node add and edit forms.
    *
-   * @param NodeInterface $node
+   * @param Drupal\node\NodeInterface $node
    *   The node object, will be used on the node edit form.
    * @param array $fields
    *   An array of form fields to check.
@@ -180,7 +174,7 @@ class OverrideNodeOptionsTest extends BrowserTestBase {
     $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['uid[0][target_id]' => 'invalid-user'], t('Save'));
     $this->assertSession()->pageTextContains('There are no entities matching "invalid-user".');
 
-    $this->drupalPostForm('node/' . $this->node->id() . '/edit', array('created[0][value][date]' => 'invalid-date'), t('Save'));
+    $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['created[0][value][date]' => 'invalid-date'], t('Save'));
     $this->assertSession()->pageTextContains('The Authored on date is invalid.');
 
     $time = time();
@@ -195,4 +189,5 @@ class OverrideNodeOptionsTest extends BrowserTestBase {
     $this->drupalLogin($this->normalUser);
     $this->assertNodeFieldsNoAccess($this->node, array_keys($fields));
   }
+
 }

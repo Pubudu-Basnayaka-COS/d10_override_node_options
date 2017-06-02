@@ -5,7 +5,14 @@ namespace Drupal\override_node_options\Form;
 use Drupal\node\NodeForm;
 use Drupal\Core\Form\FormStateInterface;
 
+/**
+ * Adds additional access checks for node override permissions.
+ */
 class OverrideNodeOptionsNodeForm extends NodeForm {
+
+  /**
+   * {@inheritdoc}
+   */
   protected function actions(array $form, FormStateInterface $form_state) {
     $element = parent::actions($form, $form_state);
     $node = $this->entity;
@@ -18,7 +25,8 @@ class OverrideNodeOptionsNodeForm extends NodeForm {
     if ($element['submit']['#access'] && $has_permissions) {
       // Add a "Publish" button.
       $element['publish'] = $element['submit'];
-      // If the "Publish" button is clicked, we want to update the status to "published".
+      // If the "Publish" button is clicked, we want to update the status to
+      // "published".
       $element['publish']['#published_status'] = TRUE;
       $element['publish']['#dropbutton'] = 'save';
       if ($node->isNew()) {
@@ -31,7 +39,8 @@ class OverrideNodeOptionsNodeForm extends NodeForm {
 
       // Add a "Unpublish" button.
       $element['unpublish'] = $element['submit'];
-      // If the "Unpublish" button is clicked, we want to update the status to "unpublished".
+      // If the "Unpublish" button is clicked, we want to update the status to
+      // "unpublished".
       $element['unpublish']['#published_status'] = FALSE;
       $element['unpublish']['#dropbutton'] = 'save';
       if ($node->isNew()) {
@@ -56,17 +65,18 @@ class OverrideNodeOptionsNodeForm extends NodeForm {
       $element['submit']['#access'] = FALSE;
     }
 
-    $element['preview'] = array(
+    $element['preview'] = [
       '#type' => 'submit',
       '#access' => $preview_mode != DRUPAL_DISABLED && ($node->access('create') || $node->access('update')),
       '#value' => $this->t('Preview'),
       '#weight' => 20,
-      '#submit' => array('::submitForm', '::preview'),
-    );
+      '#submit' => ['::submitForm', '::preview'],
+    ];
 
     $element['delete']['#access'] = $node->access('delete');
     $element['delete']['#weight'] = 100;
 
     return $element;
   }
+
 }

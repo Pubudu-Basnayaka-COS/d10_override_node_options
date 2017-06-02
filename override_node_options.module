@@ -1,8 +1,12 @@
 <?php
 
+/**
+ * @file
+ * Main module file for override_node_options.
+ */
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeForm;
 
 /**
@@ -12,7 +16,7 @@ function override_node_options_form_alter(array &$form, FormStateInterface $form
   $form_object = $form_state->getFormObject();
 
   if ($form_object instanceof NodeForm) {
-    /** @var AccountInterface $account */
+    /** @var Drupal\Core\Session\AccountProxyInterface $user */
     $user = \Drupal::currentUser();
 
     if ($user->hasPermission('administer nodes')) {
