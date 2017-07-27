@@ -8,6 +8,7 @@ use Drupal\Tests\BrowserTestBase;
  * @group override_node_options
  */
 class BulkFormTest extends BrowserTestBase {
+
   public static $modules = ['node', 'action_bulk_test', 'override_node_options'];
 
   public function testBulkOperations() {
@@ -38,8 +39,8 @@ class BulkFormTest extends BrowserTestBase {
     ];
     $this->drupalPostForm(NULL, $edit, t('Apply to selected items'));
 
-   $this->assertSession()->pageTextContains('Unpublish content was applied to 1 item.');
-   $this->assertSession()->pageTextNotContains('No access to execute Unpublish content');
+    $this->assertSession()->pageTextContains('Unpublish content was applied to 1 item.');
+    $this->assertSession()->pageTextNotContains('No access to execute Unpublish content');
   }
 
 }
