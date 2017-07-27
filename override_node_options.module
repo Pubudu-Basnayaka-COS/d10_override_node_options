@@ -58,6 +58,10 @@ function override_node_options_entity_field_access_alter(array &$grants, array $
       case 'uid':
         $grants[':default'] = AccessResult::allowedIfHasPermission($context['account'], "override $bundle authored by option");
         break;
+
+      case 'status':
+        $grants[':default'] = AccessResult::allowedIfHasPermission($context['account'], "override $bundle published option");
+        break;
     }
   }
 }
