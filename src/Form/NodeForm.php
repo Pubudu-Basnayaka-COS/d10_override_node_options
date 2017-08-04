@@ -2,13 +2,13 @@
 
 namespace Drupal\override_node_options\Form;
 
-use Drupal\node\NodeForm;
+use Drupal\node\NodeForm as NodeFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Adds additional access checks for node override permissions.
  */
-class OverrideNodeOptionsNodeForm extends NodeForm {
+class NodeForm extends NodeFormBase {
 
   /**
    * {@inheritdoc}
