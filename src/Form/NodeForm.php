@@ -19,7 +19,7 @@ class NodeForm extends NodeFormBase {
     $preview_mode = $node->type->entity->getPreviewMode();
 
     $element['submit']['#access'] = $preview_mode != DRUPAL_REQUIRED || $this->hasBeenPreviewed;
-    $user = \Drupal::currentUser();
+    $user = $this->currentUser();
     $has_permissions = $user->hasPermission("override {$node->bundle()} published option") || $user->hasPermission('administer nodes');
 
     if ($element['submit']['#access'] && $has_permissions) {
