@@ -12,7 +12,7 @@ use Drupal\Tests\BrowserTestBase;
  *
  * @group override_node_options
  */
-class OverrideNodeOptionsTest extends BrowserTestBase {
+class NodeFormTest extends BrowserTestBase {
 
   /**
    * A standard authenticated user.
