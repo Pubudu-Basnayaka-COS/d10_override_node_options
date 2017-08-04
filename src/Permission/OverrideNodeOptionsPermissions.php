@@ -21,9 +21,8 @@ class OverrideNodeOptionsPermissions {
   public function permissions() {
     $permissions = [];
 
-    /** @var Drupal\node\Entity\NodeType[] $node_types */
-    $node_types = NodeType::loadMultiple();
-    foreach ($node_types as $type) {
+    /** @var \Drupal\node\Entity\NodeType $type */
+    foreach (NodeType::loadMultiple() as $type) {
       $id = $type->id();
       $name = $type->label();
 
