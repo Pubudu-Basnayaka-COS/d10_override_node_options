@@ -17,21 +17,21 @@ class NodeFormTest extends BrowserTestBase {
   /**
    * A standard authenticated user.
    *
-   * @var Drupal\user\UserInterface
+   * @var \Drupal\user\UserInterface
    */
   protected $normalUser;
 
   /**
    * An administrator user.
    *
-   * @var Drupal\user\UserInterface
+   * @var \Drupal\user\UserInterface
    */
   protected $adminUser;
 
   /**
    * A node to test against.
    *
-   * @var Drupal\node\NodeInterface
+   * @var \Drupal\node\NodeInterface
    */
   protected $node;
 
@@ -63,7 +63,7 @@ class NodeFormTest extends BrowserTestBase {
   /**
    * Assert that fields in a node were updated to certain values.
    *
-   * @param Drupal\node\NodeInterface $node
+   * @param \Drupal\node\NodeInterface $node
    *   The node object to check (will be reloaded from the database).
    * @param array $fields
    *   An array of values to check equality, keyed by node object property.
@@ -98,7 +98,7 @@ class NodeFormTest extends BrowserTestBase {
   /**
    * Assert that the user cannot access fields on node add and edit forms.
    *
-   * @param Drupal\node\NodeInterface $node
+   * @param \Drupal\node\NodeInterface $node
    *   The node object, will be used on the node edit form.
    * @param array $fields
    *   An array of form fields to check.
