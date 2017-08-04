@@ -36,9 +36,7 @@ class NodeFormTest extends BrowserTestBase {
   protected $node;
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
   public static $modules = ['override_node_options'];
 
