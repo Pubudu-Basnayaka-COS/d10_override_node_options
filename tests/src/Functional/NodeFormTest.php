@@ -55,6 +55,11 @@ class NodeFormTest extends BrowserTestBase {
       'create page content',
       'edit any page content',
     ]);
+
+    $this->adminUser = $this->drupalCreateUser([
+      'create page content',
+    ]);
+
     $this->node = $this->drupalCreateNode();
   }
 
@@ -74,6 +79,7 @@ class NodeFormTest extends BrowserTestBase {
       // values.
       $node = Node::load($node->id());
     }
+
     if ($vid) {
       $node = node_revision_load($vid);
     }
@@ -124,12 +130,23 @@ class NodeFormTest extends BrowserTestBase {
       'override page promote to front page option',
       'override page sticky option',
     ]);
-    $this->drupalLogin($this->adminUser);
 
-    $fields = ['promote' => TRUE, 'sticky' => TRUE];
+    $generalUser = $this->drupalCreateUser([
+      'create page content',
+      'edit any page content',
+      'override all published option',
+      'override all promote to front page option',
+      'override all sticky option',
+    ]);
 
-    $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['promote[value]' => TRUE, 'sticky[value]' => TRUE], t('Save and keep published'));
-    $this->assertNodeFieldsUpdated($this->node, $fields);
+    foreach ([$this->adminUser, $generalUser] as $user) {
+      $this->drupalLogin($user);
+
+      $fields = ['promote' => TRUE, 'sticky' => TRUE];
+
+      $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['promote[value]' => TRUE, 'sticky[value]' => TRUE], t('Save and keep published'));
+      $this->assertNodeFieldsUpdated($this->node, $fields);
+    }
 
     $this->drupalLogin($this->normalUser);
     $this->assertNodeFieldsNoAccess($this->node, array_keys($fields));
@@ -144,12 +161,21 @@ class NodeFormTest extends BrowserTestBase {
       'edit any page content',
       'override page revision option',
     ]);
-    $this->drupalLogin($this->adminUser);
 
-    $fields = ['revision' => TRUE];
+    $generalUser = $this->drupalCreateUser([
+      'create page content',
+      'edit any page content',
+      'override all revision option',
+    ]);
 
-    $this->drupalPostForm('node/' . $this->node->id() . '/edit', $fields, t('Save'));
-    $this->assertNodeFieldsUpdated($this->node, [], $this->node->getRevisionId());
+    foreach ([$this->adminUser, $generalUser] as $user) {
+      $this->drupalLogin($user);
+
+      $fields = ['revision' => TRUE];
+
+      $this->drupalPostForm('node/' . $this->node->id() . '/edit', $fields, t('Save'));
+      $this->assertNodeFieldsUpdated($this->node, [], $this->node->getRevisionId());
+    }
 
     $this->drupalLogin($this->normalUser);
     $this->assertNodeFieldsNoAccess($this->node, array_keys($fields));
@@ -167,22 +193,33 @@ class NodeFormTest extends BrowserTestBase {
         'override page authored by option',
       ]
     );
-    $this->drupalLogin($this->adminUser);
 
-    $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['uid[0][target_id]' => 'invalid-user'], t('Save'));
-    $this->assertSession()->pageTextContains('There are no entities matching "invalid-user".');
-
-    $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['created[0][value][date]' => 'invalid-date'], t('Save'));
-    $this->assertSession()->pageTextContains('The Authored on date is invalid.');
+    $generalUser = $this->drupalCreateUser([
+      'create page content',
+      'edit any page content',
+      'override all authored by option',
+      'override all authored on option',
+    ]);
 
     $time = time();
-    $fields = [
-      'uid[0][target_id]' => '',
-      'created[0][value][date]' => \Drupal::service('date.formatter')->format($time, 'custom', 'Y-m-d'),
-      'created[0][value][time]' => \Drupal::service('date.formatter')->format($time, 'custom', 'H:i:s'),
-    ];
-    $this->drupalPostForm('node/' . $this->node->id() . '/edit', $fields, t('Save'));
-    $this->assertNodeFieldsUpdated($this->node, ['uid' => 0, 'created' => $time]);
+
+    foreach ([$this->adminUser, $generalUser] as $user) {
+      $this->drupalLogin($user);
+
+      $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['uid[0][target_id]' => 'invalid-user'], t('Save'));
+      $this->assertSession()->pageTextContains('There are no entities matching "invalid-user".');
+
+      $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['created[0][value][date]' => 'invalid-date'], t('Save'));
+      $this->assertSession()->pageTextContains('The Authored on date is invalid.');
+
+      $fields = [
+        'uid[0][target_id]' => '',
+        'created[0][value][date]' => \Drupal::service('date.formatter')->format($time, 'custom', 'Y-m-d'),
+        'created[0][value][time]' => \Drupal::service('date.formatter')->format($time, 'custom', 'H:i:s'),
+      ];
+      $this->drupalPostForm('node/' . $this->node->id() . '/edit', $fields, t('Save'));
+      $this->assertNodeFieldsUpdated($this->node, ['uid' => 0, 'created' => $time]);
+    }
 
     $this->drupalLogin($this->normalUser);
     $this->assertNodeFieldsNoAccess($this->node, array_keys($fields));
