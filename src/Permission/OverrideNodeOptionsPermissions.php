@@ -21,8 +21,13 @@ class OverrideNodeOptionsPermissions {
   public function permissions() {
     $permissions = [];
 
-    $this->addGeneralPermissions($permissions);
-    $this->addSpecificPermissions($permissions);
+    if (\Drupal::config('override_node_options.settings')->get('general_permissions')) {
+      $this->addGeneralPermissions($permissions);
+    }
+
+    if (\Drupal::config('override_node_options.settings')->get('specific_permissions')) {
+      $this->addSpecificPermissions($permissions);
+    }
 
     return $permissions;
   }
