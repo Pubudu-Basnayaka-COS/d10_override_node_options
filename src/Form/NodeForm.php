@@ -20,7 +20,9 @@ class NodeForm extends NodeFormBase {
 
     $element['submit']['#access'] = $preview_mode != DRUPAL_REQUIRED || $this->hasBeenPreviewed;
     $user = $this->currentUser();
-    $has_permissions = $user->hasPermission("override {$node->bundle()} published option") || $user->hasPermission('administer nodes');
+    $has_permissions = $user->hasPermission('override all published option')
+      || $user->hasPermission("override {$node->bundle()} published option")
+      || $user->hasPermission('administer nodes');
 
     if ($element['submit']['#access'] && $has_permissions) {
       // Add a "Publish" button.
