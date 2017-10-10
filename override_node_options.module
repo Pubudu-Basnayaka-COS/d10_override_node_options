@@ -96,7 +96,14 @@ function override_node_options_entity_field_access_alter(array &$grants, array $
         break;
 
       case 'status':
-        $grants[':default'] = AccessResult::allowedIfHasPermission($context['account'], "override $bundle published option");
+        $grants[':default'] = AccessResult::allowedIfHasPermissions(
+          $context['account'],
+          [
+            'override all published option',
+            "override $bundle published option",
+          ],
+          'OR'
+        );
         break;
     }
   }
