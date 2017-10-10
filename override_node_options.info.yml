@@ -6,3 +6,4 @@ package: Permissions
 configure: override_node_options.settings
 dependencies:
   - drupal:node
+  - drupal:system (>=8.4.0)
