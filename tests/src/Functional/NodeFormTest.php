@@ -139,12 +139,25 @@ class NodeFormTest extends BrowserTestBase {
       'override all sticky option',
     ]);
 
+    $fields = [
+      'promote' => TRUE,
+      'status' => TRUE,
+      'sticky' => TRUE,
+    ];
+
     foreach ([$this->adminUser, $generalUser] as $user) {
       $this->drupalLogin($user);
 
-      $fields = ['promote' => TRUE, 'sticky' => TRUE];
+      $this->drupalPostForm(
+        "node/{$this->node->id()}/edit",
+        [
+          'promote[value]' => TRUE,
+          'status[value]' => TRUE,
+          'sticky[value]' => TRUE,
+        ],
+        t('Save')
+      );
 
-      $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['promote[value]' => TRUE, 'sticky[value]' => TRUE], t('Save and keep published'));
       $this->assertNodeFieldsUpdated($this->node, $fields);
     }
 
