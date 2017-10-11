@@ -75,37 +75,37 @@ class OverrideNodeOptionsPermissions {
    *   The permissions array, passed by reference.
    */
   private function addSpecificPermissions(array &$permissions) {
-    /** @var \Drupal\node\Entity\NodeType $type */
-    foreach (NodeType::loadMultiple() as $type) {
-      $id = $type->id();
-      $name = $type->label();
+    /** @var \Drupal\node\Entity\NodeType $node_type */
+    foreach (NodeType::loadMultiple() as $node_type) {
+      $type = $node_type->id();
+      $label = $node_type->label();
 
-      $permissions["override $id published option"] = [
-        'title' => $this->t("Override %type_name published option.", ["%type_name" => $name]),
+      $permissions["override $type published option"] = [
+        'title' => $this->t("Override %name published option.", ["%name" => $label]),
       ];
 
-      $permissions["override $id promote to front page option"] = [
-        'title' => $this->t("Override %type_name promote to front page option.", ["%type_name" => $name]),
+      $permissions["override $type promote to front page option"] = [
+        'title' => $this->t("Override %name promote to front page option.", ["%name" => $label]),
       ];
 
-      $permissions["override $id sticky option"] = [
-        'title' => $this->t("Override %type_name sticky option.", ["%type_name" => $name]),
+      $permissions["override $type sticky option"] = [
+        'title' => $this->t("Override %name sticky option.", ["%name" => $label]),
       ];
 
-      $permissions["override $id revision option"] = [
-        'title' => $this->t("Override %type_name revision option.", ["%type_name" => $name]),
+      $permissions["override $type revision option"] = [
+        'title' => $this->t("Override %name revision option.", ["%name" => $label]),
       ];
 
-      $permissions["enter $id revision log entry"] = [
-        'title' => $this->t("Enter %type_name revision log entry.", ["%type_name" => $name]),
+      $permissions["enter $type revision log entry"] = [
+        'title' => $this->t("Enter %name revision log entry.", ["%name" => $label]),
       ];
 
-      $permissions["override $id authored on option"] = [
-        'title' => $this->t("Override %type_name authored on option.", ["%type_name" => $name]),
+      $permissions["override $type authored on option"] = [
+        'title' => $this->t("Override %name authored on option.", ["%name" => $label]),
       ];
 
-      $permissions["override $id authored by option"] = [
-        'title' => $this->t("Override %type_name authored by option.", ["%type_name" => $name]),
+      $permissions["override $type authored by option"] = [
+        'title' => $this->t("Override %name authored by option.", ["%name" => $label]),
       ];
     }
   }
