@@ -55,6 +55,10 @@ class OverrideNodeOptionsPermissions {
       'title' => $this->t('Override all revision option.'),
     ];
 
+    $permissions['enter all revision log entry'] = [
+      'title' => $this->t('Enter revision log entries for all node types.'),
+    ];
+
     $permissions['override all authored by option'] = [
       'title' => $this->t('Override all authored by option.'),
     ];
@@ -92,7 +96,7 @@ class OverrideNodeOptionsPermissions {
         'title' => $this->t("Override %type_name revision option.", ["%type_name" => $name]),
       ];
 
-      $permissions["override $id revision log entry"] = [
+      $permissions["enter $id revision log entry"] = [
         'title' => $this->t("Enter %type_name revision log entry.", ["%type_name" => $name]),
       ];
 

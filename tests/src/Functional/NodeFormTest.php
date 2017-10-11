@@ -162,21 +162,29 @@ class NodeFormTest extends BrowserTestBase {
     $specific_user = $this->drupalCreateUser([
       'create page content',
       'edit any page content',
+      'enter page revision log entry',
       'override page revision option',
     ]);
 
     $general_user = $this->drupalCreateUser([
       'create page content',
       'edit any page content',
+      'enter all revision log entry',
       'override all revision option',
     ]);
 
-    $fields = ['revision' => TRUE];
+    $fields = [
+      'revision' => TRUE,
+      'revision_log' => TRUE,
+    ];
 
     foreach ([$specific_user, $general_user] as $user) {
       $this->drupalLogin($user);
 
-      $this->drupalPostForm('node/' . $this->node->id() . '/edit', $fields, t('Save'));
+      $this->drupalPostForm('node/' . $this->node->id() . '/edit', [
+        'revision' => TRUE,
+        'revision_log[0][value]' => '',
+      ], t('Save'));
 
       $this->assertNodeFieldsUpdated($this->node, [], $this->node->getRevisionId());
     }

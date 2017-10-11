@@ -66,8 +66,8 @@ function override_node_options_entity_field_access_alter(array &$grants, array $
         $grants[':default'] = AccessResult::allowedIfHasPermissions(
           $context['account'],
           [
-  //          'override all revision log entry',
-            "override $bundle revision log entry",
+            'enter all revision log entry',
+            "enter $bundle revision log entry",
           ],
           'OR'
         );
