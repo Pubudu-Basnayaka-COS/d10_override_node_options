@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\override_node_options\Permission;
+namespace Drupal\override_node_options;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\node\Entity\NodeType;
@@ -8,7 +8,7 @@ use Drupal\node\Entity\NodeType;
 /**
  * Provides dynamic override permissions for nodes of different types.
  */
-class OverrideNodeOptionsPermissions {
+class NodePermissions {
 
   use StringTranslationTrait;
 
@@ -18,7 +18,7 @@ class OverrideNodeOptionsPermissions {
    * @return array
    *   An array of permissions.
    */
-  public function permissions() {
+  public function nodeTypePermissions() {
     $permissions = [];
 
     if (\Drupal::config('override_node_options.settings')->get('general_permissions')) {
