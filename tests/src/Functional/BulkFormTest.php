@@ -5,6 +5,8 @@ namespace Drupal\Tests\override_node_options\Functional;
 use Drupal\Tests\BrowserTestBase;
 
 /**
+ * Functional test for override_node_options bulk form operations.
+ *
  * @group override_node_options
  */
 class BulkFormTest extends BrowserTestBase {

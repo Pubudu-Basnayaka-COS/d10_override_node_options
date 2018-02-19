@@ -43,4 +43,3 @@ MAINTAINERS
 Current maintainers:
 
  * Oliver Davies (opdavies) - https://www.drupal.org/u/opdavies
-
