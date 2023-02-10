@@ -31,7 +31,7 @@ class NodeFormTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['override_node_options'];
+  protected static $modules = ['override_node_options'];
 
   /**
    * {@inheritdoc}
@@ -41,7 +41,7 @@ class NodeFormTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $types = NodeType::loadMultiple();
@@ -141,16 +141,13 @@ class NodeFormTest extends BrowserTestBase {
 
     foreach ([$specific_user, $general_user] as $user) {
       $this->drupalLogin($user);
+      $this->drupalGet("node/{$this->node->id()}/edit");
 
-      $this->drupalPostForm(
-        "node/{$this->node->id()}/edit",
-        [
-          'promote[value]' => TRUE,
-          'status[value]' => TRUE,
-          'sticky[value]' => TRUE,
-        ],
-        t('Save')
-      );
+      $this->submitForm([
+        'promote[value]' => TRUE,
+        'status[value]' => TRUE,
+        'sticky[value]' => TRUE,
+      ], t('Save'));
 
       $this->assertNodeFieldsUpdated($this->node, $fields);
     }
@@ -185,8 +182,9 @@ class NodeFormTest extends BrowserTestBase {
 
     foreach ([$specific_user, $general_user] as $user) {
       $this->drupalLogin($user);
+      $this->drupalGet('node/' . $this->node->id() . '/edit');
 
-      $this->drupalPostForm('node/' . $this->node->id() . '/edit', [
+      $this->submitForm([
         'revision' => TRUE,
         'revision_log[0][value]' => '',
       ], t('Save'));
@@ -228,16 +226,19 @@ class NodeFormTest extends BrowserTestBase {
 
     foreach ([$specific_user, $general_user] as $user) {
       $this->drupalLogin($user);
+      $this->drupalGet('node/' . $this->node->id() . '/edit');
 
-      $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['uid[0][target_id]' => 'invalid-user'], t('Save'));
+      $this->submitForm(['uid[0][target_id]' => 'invalid-user'], t('Save'));
 
       $this->assertSession()->pageTextContains('There are no entities matching "invalid-user".');
+      $this->drupalGet('node/' . $this->node->id() . '/edit');
 
-      $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['created[0][value][date]' => 'invalid-date'], t('Save'));
+      $this->submitForm(['created[0][value][date]' => 'invalid-date'], t('Save'));
 
       $this->assertSession()->pageTextContains('The Authored on date is invalid.');
+      $this->drupalGet('node/' . $this->node->id() . '/edit');
 
-      $this->drupalPostForm('node/' . $this->node->id() . '/edit', $fields, t('Save'));
+      $this->submitForm($fields, t('Save'));
 
       $this->assertNodeFieldsUpdated($this->node, [
         'created' => $time,
